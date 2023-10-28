@@ -1,0 +1,159 @@
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  monolith:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description:
+        Fn::Sub:
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: monolith
+      CodeUri: monolith
+      Handler: handler.handler
+      Runtime: python3.10
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Environment:
+        Variables:
+          DEMOCODE_USER_POOL_ID:
+            Ref: demoCode
+          DEMOCODE_USER_POOL_ARN:
+            Fn::GetAtt:
+            - demoCode
+            - Arn
+      Policies:
+      - Statement:
+        - Effect: Allow
+          Action:
+          - cognito-idp:Admin*
+          - cognito-idp:DescribeIdentityProvider
+          - cognito-idp:DescribeResourceServer
+          - cognito-idp:DescribeUserPool
+          - cognito-idp:DescribeUserPoolClient
+          - cognito-idp:DescribeUserPoolDomain
+          - cognito-idp:GetGroup
+          - cognito-idp:ListGroups
+          - cognito-idp:ListUserPoolClients
+          - cognito-idp:ListUsers
+          - cognito-idp:ListUsersInGroup
+          - cognito-idp:UpdateGroup
+          Resource:
+            Fn::GetAtt:
+            - demoCode
+            - Arn
+    Metadata:
+      SamResourceId: monolith
+  monolithLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    Properties:
+      LogGroupName:
+        Fn::Sub: /aws/lambda/${monolith}
+  monolithInfo:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description:
+        Fn::Sub:
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: monolithInfo
+      CodeUri: monolithInfo
+      Handler: handler.handler
+      Runtime: python3.10
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Environment:
+        Variables:
+          DEMOCODE_USER_POOL_ID:
+            Ref: demoCode
+          DEMOCODE_USER_POOL_ARN:
+            Fn::GetAtt:
+            - demoCode
+            - Arn
+      Policies:
+      - Statement:
+        - Effect: Allow
+          Action:
+          - cognito-idp:Admin*
+          - cognito-idp:DescribeIdentityProvider
+          - cognito-idp:DescribeResourceServer
+          - cognito-idp:DescribeUserPool
+          - cognito-idp:DescribeUserPoolClient
+          - cognito-idp:DescribeUserPoolDomain
+          - cognito-idp:GetGroup
+          - cognito-idp:ListGroups
+          - cognito-idp:ListUserPoolClients
+          - cognito-idp:ListUsers
+          - cognito-idp:ListUsersInGroup
+          - cognito-idp:UpdateGroup
+          Resource:
+            Fn::GetAtt:
+            - demoCode
+            - Arn
+    Metadata:
+      SamResourceId: monolithInfo
+  monolithInfoLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    Properties:
+      LogGroupName:
+        Fn::Sub: /aws/lambda/${monolithInfo}
+  monolithS3:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description:
+        Fn::Sub:
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: monolithS3
+      CodeUri: monolithS3
+      Handler: handler.handler
+      Runtime: python3.10
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Environment:
+        Variables:
+          DEMOCODE_USER_POOL_ID:
+            Ref: demoCode
+          DEMOCODE_USER_POOL_ARN:
+            Fn::GetAtt:
+            - demoCode
+            - Arn
+      Policies:
+      - Statement:
+        - Effect: Allow
+          Action:
+          - cognito-idp:Admin*
+          - cognito-idp:DescribeIdentityProvider
+          - cognito-idp:DescribeResourceServer
+          - cognito-idp:DescribeUserPool
+          - cognito-idp:DescribeUserPoolClient
+          - cognito-idp:DescribeUserPoolDomain
+          - cognito-idp:GetGroup
+          - cognito-idp:ListGroups
+          - cognito-idp:ListUserPoolClients
+          - cognito-idp:ListUsers
+          - cognito-idp:ListUsersInGroup
+          - cognito-idp:UpdateGroup
+          Resource:
+            Fn::GetAtt:
+            - demoCode
+            - Arn
+    Metadata:
+      SamResourceId: monolithS3
+  monolithS3LogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    Properties:
+      LogGroupName:
+        Fn::Sub: /aws/lambda/${monolithS3}
+  demoCode:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: false
+      AliasAttributes:
+      - email
+      - preferred_username
+      UserPoolName:
+        Fn::Sub: ${AWS::StackName}-demoCode
