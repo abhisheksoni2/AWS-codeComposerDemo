@@ -39,17 +39,17 @@ jobs:
               with:
                 use-installer: true
 
-            - name: Configure AWS credentials
-              uses: aws-actions/configure-aws-credentials@v3
-              env:
-                    BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-              with:
-                    role-to-assume: arn:aws:iam::359638155793:role/CN-GITHUB
-                    role-session-name: demo-codeComposer
-                    aws-region: us-east-1
+            # - name: Configure AWS credentials
+            #   uses: aws-actions/configure-aws-credentials@v3
+            #   env:
+            #         BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+            #   with:
+            #         role-to-assume: arn:aws:iam::359638155793:role/CN-GITHUB
+            #         role-session-name: demo-codeComposer
+            #         aws-region: us-east-1
 
             - name: Validate Sam
-              run: sam validate 
+              run: sam validate --region=us-east-1
 
     deploy:
         name: Sam Build and Deploy
