@@ -1,3 +1,4 @@
+#template file
 Transform: AWS::Serverless-2016-10-31
 Resources:
   monolith:
